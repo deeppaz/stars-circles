@@ -1,41 +1,40 @@
 import { useState } from "react";
-import { useSignInUserMutation } from "store/api/AccountApi";
+import { useSignUpUserMutation } from "store/api/AccountApi";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "hooks";
 
-export default function Login() {
+export default function Register() {
   let navigate = useNavigate();
+  const [createUser, createUserResponse] = useSignUpUserMutation();
   const [AlertMessage, isVisible, getProps] = useNotifications();
-  const [signInUser, signInUserResponse] = useSignInUserMutation();
   const [formFields, setFormFields] = useState({
     username: "",
     password: "",
   });
 
-  const onFinishLogin = (event) => {
+  const onFinishRegister = (event) => {
     event.preventDefault();
     var body = {
       username: formFields.username,
       password: formFields.password,
     };
-    signInUser(body)
+    createUser(body)
       .unwrap()
       .then((res) => {
-        localStorage.setItem("token", JSON.stringify(res.token));
         getProps({
           type: 1,
           message: res.message,
         });
-        navigate("/list");
+        navigate("/login");
       })
-      .catch((err) =>
+      .catch((err) => {
+        console.log(err.data.message);
         getProps({
           type: 2,
           message: err.data.message,
-        })
-      );
+        });
+      });
   };
-
   const onChangeSignInForm = (e) => {
     setFormFields((prev) => {
       let fields = { ...prev };
@@ -61,14 +60,13 @@ export default function Login() {
             <div className="max-w-md mx-auto md:max-w-sm md:w-96">
               <div className="flex flex-col text-center">
                 <h1 className="text-3xl font-semibold tracking-tighter text-sky-400">
-                  Hi👋,
-                  <span className="text-gray-600"> Welcome Back.</span>
+                  <span className="text-gray-600"> Sign Up.</span>
                 </h1>
-                <p className="mt-4 mb-4  text-base font-medium text-gray-500">
-                  Enter your credentials to continue to Stars Circles dashboard.
+                <p className="mt-4 mb-4 text-base font-medium text-gray-500">
+                  Sign Up to continue to Stars Circles dashboard.
                 </p>
               </div>
-              <form onSubmit={onFinishLogin}>
+              <form onSubmit={onFinishRegister}>
                 <div className="space-y-3">
                   <div>
                     <label
@@ -83,7 +81,6 @@ export default function Login() {
                       type="text"
                       id="username"
                       placeholder="Username"
-                      required
                       className="block w-full h-12 px-4 py-2 text-sky-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
                     />
                   </div>
@@ -101,7 +98,6 @@ export default function Login() {
                       className="block w-full h-12 px-4 py-2 text-sky-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
                       placeholder="Type password here..."
                       type="password"
-                      required
                     />
                   </div>
                   <div className="col-span-full">
@@ -109,11 +105,11 @@ export default function Login() {
                       type="submit"
                       className="inline-flex items-center justify-center w-full h-12 gap-3 px-5 py-3 font-medium text-white duration-200 bg-sky-400 rounded-xl hover:bg-sky-700 focus:ring-2 focus:ring-offset-2 focus:ring-black"
                     >
-                      Sign in
+                      Sign Up
                       <div
                         role="status"
                         style={{
-                          display: signInUserResponse.isLoading
+                          display: createUserResponse.isLoading
                             ? "block"
                             : "none",
                         }}
@@ -143,9 +139,9 @@ export default function Login() {
                   <p className="flex mx-auto text-sm font-medium leading-tight text-center text-black">
                     <a
                       className="ml-auto text-sky-400 hover:text-black"
-                      href="/register"
+                      href="/login"
                     >
-                      Sign up right now
+                      Aldready have account?
                     </a>
                   </p>
                 </div>
