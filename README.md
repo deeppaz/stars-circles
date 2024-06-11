@@ -13,9 +13,9 @@ This project is just a assignment for Stars Circles.
 
 ## Getting Started
 Clone the repository:
- ```sh
-   git clone https://github.com/deeppaz/stars-circles.git
-   ```
+```sh
+git clone https://github.com/deeppaz/stars-circles.git
+```
 ### Server Installation
 
 In the project directory, you can run:
@@ -26,9 +26,9 @@ In the project directory, you can run:
 ### Client Installation
 
 In the project directory, you can run:
-   ```sh
-   npm install
-   ```
+```sh
+npm install
+```
 ### Running the Project
 
 To start the development server, run:
