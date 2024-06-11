@@ -2,8 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import jwt from 'jsonwebtoken'
-import { User } from "./models/user.js";
+import jwt from "jsonwebtoken";
 const app = express();
 
 app.use(cors());
@@ -30,14 +29,16 @@ app.listen(PORT, async () => {
   }
 });
 
+const users = [{ username: "user", password: "user123" }];
+
 app.post("/auth/signup", async (req, res) => {
   try {
     const user = req.body;
     const { username, password } = user;
 
-    const isUsernameAllreadyExist = await User.findOne({
-      username: username,
-    });
+    const isUsernameAllreadyExist = users.find(
+      (value) => value.username == username
+    );
 
     if (isUsernameAllreadyExist) {
       res.status(400).json({
@@ -46,7 +47,7 @@ app.post("/auth/signup", async (req, res) => {
       });
       return;
     }
-    const newUser = await User.create({
+    const newUser = users.push({
       username,
       password,
     });
@@ -71,25 +72,14 @@ app.post("/auth/signin", async (req, res) => {
     const user = req.body;
     const { username, password } = user;
 
-    const isUserExist = await User.findOne({
-      username: username,
-    });
+    const isUserExist = users.find(
+      (value) => value.username == username && value.password == password
+    );
     if (!isUserExist) {
       res.status(404).json({
         status: 404,
         success: false,
-        message: "User Not Found",
-      });
-      return;
-    }
-
-    const isPasswordMatched = isUserExist?.password === password;
-
-    if (!isPasswordMatched) {
-      res.status(400).json({
-        status: 400,
-        error: true,
-        message: "Wrong Password",
+        message: "Username or password is wrong",
       });
       return;
     }

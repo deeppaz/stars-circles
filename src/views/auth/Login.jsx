@@ -28,14 +28,20 @@ export default function Login() {
         });
         navigate("/list");
       })
-      .catch((err) =>
+      .catch((err) => {
+        if (err.status === "FETCH_ERROR") {
+          getProps({
+            type: 2,
+            message: "Server is offline",
+          });
+        }
         getProps({
           type: 2,
           message: err.data.message,
-        })
-      );
+        });
+      });
   };
-
+  
   const onChangeSignInForm = (e) => {
     setFormFields((prev) => {
       let fields = { ...prev };
@@ -64,9 +70,9 @@ export default function Login() {
                   Hi👋,
                   <span className="text-gray-600"> Welcome Back.</span>
                 </h1>
-                <p className="mt-4 mb-4  text-base font-medium text-gray-500">
+                <span className="mt-4 mb-4  text-base font-medium text-gray-500">
                   Enter your credentials to continue to Stars Circles dashboard.
-                </p>
+                </span>
               </div>
               <form onSubmit={onFinishLogin}>
                 <div className="space-y-3">
@@ -140,14 +146,14 @@ export default function Login() {
                   </div>
                 </div>
                 <div className="mt-6">
-                  <p className="flex mx-auto text-sm font-medium leading-tight text-center text-black">
+                  <span className="flex mx-auto text-sm font-medium leading-tight text-center text-black">
                     <a
                       className="ml-auto text-sky-400 hover:text-black"
                       href="/register"
                     >
                       Sign up right now
                     </a>
-                  </p>
+                  </span>
                 </div>
               </form>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Pagination from "components/Pagination";
 import { useGetAllProductsQuery } from "store/api/ProductApi";
+import ProductDetail from "./ProductDetail";
 
 const List = () => {
   const {
@@ -8,19 +9,29 @@ const List = () => {
     error: getAllProductsError,
     isLoading: getAllProductsIsLoading,
   } = useGetAllProductsQuery();
-  const [currentPage, setCurrentPage] = useState(1); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productId, setProductId] = useState(null);
+
+  const itemsPerPage = 10;
+  const totalItems = getAllProducts?.products?.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const onPageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleProductDetailId = (id) => {
+    setProductId(id);
+  };
 
   if (getAllProductsIsLoading) {
     return "Loadign...";
   }
- 
-  const itemsPerPage = 10; 
-  const totalItems = getAllProducts.products.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage); 
 
-  const onPageChange = (newPage) => {
-    setCurrentPage(newPage); 
-  };
+  if (productId) {
+    return <ProductDetail productId={productId} />;
+  }
+
   return (
     <div className="p-2 sm:ml-64">
       <div className="p-2 bg-gray-100 border-2 border-gray-200  rounded-lg light:border-gray-700 mt-14">
@@ -29,9 +40,9 @@ const List = () => {
             Product List
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500 light:text-gray-300">
+          <span className="mt-1 text-sm text-gray-500 light:text-gray-300">
             To go to product detail, just click on a column.
-          </p>
+          </span>
 
           <div className="flex flex-col mt-6">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -77,15 +88,19 @@ const List = () => {
                         )
                         .map((res, i) => {
                           return (
-                            <tr key={i}>
+                            <tr
+                              key={i}
+                              className="hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                              onClick={() => handleProductDetailId(res.id)}
+                            >
                               <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                 <div>
                                   <h2 className="font-medium text-gray-800 light:text-white ">
                                     {res.brand}
                                   </h2>
-                                  <p className="text-sm font-normal text-gray-600 light:text-gray-400">
+                                  <span className="text-sm font-normal text-gray-600 light:text-gray-400">
                                     {res.title}
-                                  </p>
+                                  </span>
                                 </div>
                               </td>
                               <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
@@ -95,9 +110,10 @@ const List = () => {
                               </td>
                               <td className="px-4 py-4 text-sm whitespace-nowrap">
                                 <div className="flex items-center">
-                                  {[1, 2, 3, 4, 5].map((star) => {
+                                  {[1, 2, 3, 4, 5].map((star, i) => {
                                     return (
                                       <svg
+                                        key={i}
                                         className={`flex-shrink-0 size-5 text-yellow-400 ${
                                           res.rating >= star
                                             ? "dark:text-yellow-600"
@@ -117,9 +133,10 @@ const List = () => {
                               </td>
                               <td className="px-4 py-4 text-sm whitespace-nowrap">
                                 <div className="flex items-center">
-                                  {res.images.map((images) => {
+                                  {res.images.map((images, i) => {
                                     return (
                                       <img
+                                        key={i}
                                         className="w-12 h-12 -mx-1 border-2 border-white rounded-full light:border-gray-700 shrink-0"
                                         src={images}
                                       />

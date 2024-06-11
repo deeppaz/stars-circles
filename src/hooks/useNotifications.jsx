@@ -14,11 +14,13 @@ const useNotifications = () => {
     setMessage(message);
     showMessage();
   };
+  
   useEffect(() => {
     setTimeout(function () {
       hideMessage();
     }, 5000);
   });
+
   const AlertMessage = () => {
     return (
       <div>

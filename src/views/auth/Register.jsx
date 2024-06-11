@@ -28,7 +28,12 @@ export default function Register() {
         navigate("/login");
       })
       .catch((err) => {
-        console.log(err.data.message);
+        if (err.status === "FETCH_ERROR") {
+          getProps({
+            type: 2,
+            message: "Server is offline",
+          });
+        }
         getProps({
           type: 2,
           message: err.data.message,
@@ -62,9 +67,9 @@ export default function Register() {
                 <h1 className="text-3xl font-semibold tracking-tighter text-sky-400">
                   <span className="text-gray-600"> Sign Up.</span>
                 </h1>
-                <p className="mt-4 mb-4 text-base font-medium text-gray-500">
+                <span className="mt-4 mb-4 text-base font-medium text-gray-500">
                   Sign Up to continue to Stars Circles dashboard.
-                </p>
+                </span>
               </div>
               <form onSubmit={onFinishRegister}>
                 <div className="space-y-3">
@@ -136,14 +141,14 @@ export default function Register() {
                   </div>
                 </div>
                 <div className="mt-6">
-                  <p className="flex mx-auto text-sm font-medium leading-tight text-center text-black">
+                  <span className="flex mx-auto text-sm font-medium leading-tight text-center text-black">
                     <a
                       className="ml-auto text-sky-400 hover:text-black"
                       href="/login"
                     >
                       Aldready have account?
                     </a>
-                  </p>
+                  </span>
                 </div>
               </form>
             </div>

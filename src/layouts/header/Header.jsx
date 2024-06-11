@@ -56,15 +56,15 @@ const Header = () => {
                 id="dropdown-user"
               >
                 <div className="px-4 py-3" role="none">
-                  <p className="text-sm text-gray-900 light:text-white" role="none">
+                  <span className="text-sm text-gray-900 light:text-white" role="none">
                     Neil Sims
-                  </p>
-                  <p
+                  </span>
+                  <span
                     className="text-sm font-medium text-gray-900 truncate light:text-gray-300"
                     role="none"
                   >
                     neil.sims@flowbite.com
-                  </p>
+                  </span>
                 </div>
                 <ul className="py-1" role="none">
                   <li>
