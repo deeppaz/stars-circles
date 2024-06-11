@@ -30,7 +30,17 @@ export const ProductApi = createApi({
       },
       providesTags: ["Product"],
     }),
+    updateProductById: build.mutation({
+      query(body, id) {
+        return {
+          url: `products/${id}`,
+          method: "PUT",
+          body,
+        };
+      },
+      invalidatesTags: ["Product"],
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery, useGetProductByIdQuery } = ProductApi;
+export const { useGetAllProductsQuery, useGetProductByIdQuery, useUpdateProductByIdMutation } = ProductApi;

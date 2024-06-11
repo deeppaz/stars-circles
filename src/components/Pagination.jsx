@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Pagination = ({ currentPage, totalPages, onPageChange, total }) => {
   const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) {
+      return; 
+    }
     onPageChange(newPage);
   };
 
   return (
     <div className="flex items-center justify-between mt-6">
       <a
-        href="#"
-        className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 light:bg-gray-900 light:text-gray-200 light:border-gray-700 light:hover:bg-gray-800"
+        className="flex items-center cursor-pointer px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 light:bg-gray-900 light:text-gray-200 light:border-gray-700 light:hover:bg-gray-800"
         onClick={() => handlePageChange(currentPage - 1)}
       >
         <svg
@@ -34,8 +36,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, total }) => {
         {Array.from({ length: totalPages }, (_, index) => (
           <a
             key={index}
-            href="#"
-            className={`px-2 py-1 text-sm rounded-md ${
+            className={`px-2 py-1 cursor-pointer text-sm rounded-md ${
               currentPage === index + 1
                 ? "text-blue-500 bg-blue-100/60"
                 : "text-gray-500 hover:bg-gray-100"
@@ -58,8 +59,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, total }) => {
       </div>
 
       <a
-        href="#"
-        className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 light:bg-gray-900 light:text-gray-200 light:border-gray-700 light:hover:bg-gray-800"
+        className="flex items-center cursor-pointer px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 light:bg-gray-900 light:text-gray-200 light:border-gray-700 light:hover:bg-gray-800"
         onClick={() => handlePageChange(currentPage + 1)}
       >
         <span>Next</span>

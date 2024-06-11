@@ -1,12 +1,13 @@
 import React from "react";
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   return (
     <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 light:bg-gray-800 light:border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start rtl:justify-end">
             <button
+              onClick={toggleSidebar}
               data-drawer-target="logo-sidebar"
               data-drawer-toggle="logo-sidebar"
               aria-controls="logo-sidebar"
@@ -56,7 +57,10 @@ const Header = () => {
                 id="dropdown-user"
               >
                 <div className="px-4 py-3" role="none">
-                  <span className="text-sm text-gray-900 light:text-white" role="none">
+                  <span
+                    className="text-sm text-gray-900 light:text-white"
+                    role="none"
+                  >
                     Neil Sims
                   </span>
                   <span
